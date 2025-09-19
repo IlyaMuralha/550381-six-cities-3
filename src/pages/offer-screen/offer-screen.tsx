@@ -10,6 +10,7 @@ import OfferCardList from '../../components/offer-card-list/offer-card-list';
 import { AuthorizationStatus } from '../../const';
 import Map from '../../components/map/map';
 import ReviewsList from '../../components/reviews-list/reviews-list';
+import { calcRating } from '../../utils';
 
 
 type OfferScreenProps = {
@@ -29,7 +30,7 @@ function OfferScreen({offers, authorizationStatus, reviews}: OfferScreenProps): 
   const maxAdultsTitle = `Max ${currentOffer.maxAdults} ${currentOffer.maxAdults > 1 ? 'adults' : 'adult'}`;
   const bedroomsTitle = `${currentOffer.bedrooms} ${currentOffer.bedrooms > 1 ? 'Bedrooms' : 'Bedrooms'}`;
 
-  const ratingStyle = currentOffer.rating * 100 / 5;
+  const ratingStyle = calcRating(currentOffer.rating);
 
   const nearOffers: TOffer[] = offers.slice(1);
   const nearOffersPlusCurrent: TOffer[] = [currentOffer, ...nearOffers];

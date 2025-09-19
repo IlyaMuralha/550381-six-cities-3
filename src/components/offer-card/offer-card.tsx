@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import Badge from '../badge/badge';
 import { TOffer } from './types';
 import Bookmark from '../bookmark/bookmark';
+import { calcRating } from '../../utils';
 
 type TClassesForType = {
   container: string;
@@ -24,7 +25,7 @@ type OfferCardProps = {
 function OfferCard({offer, handleHover, classesForType, sizeForType}: OfferCardProps): JSX.Element {
   const {id, title, type, price, isFavorite, isPremium, images, rating } = offer;
 
-  const ratingStyle = rating * 100 / 5;
+  const ratingStyle = calcRating(rating);
 
   const handleMouseEnter = () => {
     handleHover?.(offer);
