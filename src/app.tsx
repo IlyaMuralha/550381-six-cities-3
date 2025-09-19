@@ -12,12 +12,11 @@ import { TOffer } from './components/offer-card/types';
 import { TReview } from './components/review/types';
 
 type AppScreenProps = {
-  offerCardCount: number;
   offers: TOffer[];
   reviews: TReview[];
 }
 
-function App({offers, offerCardCount, reviews}: AppScreenProps): JSX.Element {
+function App({offers, reviews}: AppScreenProps): JSX.Element {
   const [activeOffer, setActiveOffer] = useState<TOffer | undefined>(undefined);
 
   const handleOfferHover = (offer?: TOffer) => {
@@ -35,7 +34,6 @@ function App({offers, offerCardCount, reviews}: AppScreenProps): JSX.Element {
           <Route index element={
             <MainScreen
               offers={offers}
-              offerCardCount={offerCardCount}
               handleHover={handleOfferHover}
               activeOffer={activeOffer}
             />

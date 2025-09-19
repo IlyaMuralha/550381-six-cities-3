@@ -5,14 +5,15 @@ import SortForm from '../../components/sort-form/sort-form';
 import { TOffer } from '../../components/offer-card/types';
 
 type MainScreenProps = {
-  offerCardCount: number;
   offers: TOffer[];
   activeOffer: TOffer | undefined;
   handleHover?: (offer?: TOffer) => void;
 }
 
-function MainScreen({offers, offerCardCount, handleHover, activeOffer}: MainScreenProps): JSX.Element {
+function MainScreen({offers, handleHover, activeOffer}: MainScreenProps): JSX.Element {
   const currentCity = offers[0].city;
+  const currentOffers = offers.filter((offer) => offer.city.name === currentCity.name);
+  const offerCardCount = currentOffers.length;
 
   return (
     <main className="page__main page__main--index">
@@ -22,14 +23,14 @@ function MainScreen({offers, offerCardCount, handleHover, activeOffer}: MainScre
         <div className="cities__places-container container">
           <section className="cities__places places">
             <h2 className="visually-hidden">Places</h2>
-            <b className="places__found">{offerCardCount} places to stay in Amsterdam</b>
+            <b className="places__found">{offerCardCount} places to stay in {currentCity.name}</b>
             <SortForm />
 
-            <OfferCardList offers={offers} type='mainScreen' handleHover={handleHover}/>
+            <OfferCardList offers={currentOffers} type='mainScreen' handleHover={handleHover}/>
 
           </section>
           <div className="cities__right-section">
-            <Map type='main' activeOffer={activeOffer} offers={offers} city={currentCity}/>
+            <Map type='main' activeOffer={activeOffer} offers={currentOffers} city={currentCity}/>
           </div>
         </div>
       </div>
