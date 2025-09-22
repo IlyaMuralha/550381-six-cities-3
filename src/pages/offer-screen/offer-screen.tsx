@@ -22,7 +22,6 @@ type OfferScreenProps = {
 function OfferScreen({ authorizationStatus, reviews}: OfferScreenProps): JSX.Element {
   const offers = useAppSelector((state) => state.offers);
   const {id} = useParams();
-  const currentCity = offers[0].city;
   const currentOffer: TOffer | undefined = offers.find((offer: TOffer) => offer.id === id);
 
   if (!currentOffer) {
@@ -33,7 +32,9 @@ function OfferScreen({ authorizationStatus, reviews}: OfferScreenProps): JSX.Ele
 
   const ratingStyle = calcRating(currentOffer.rating);
 
-  const nearOffers: TOffer[] = offers.slice(1);
+  const currentCity = currentOffer.city;
+  const nearOffers: TOffer[] = offers.filter((offer) => offer.city.name === currentCity.name);
+
   const nearOffersPlusCurrent: TOffer[] = [currentOffer, ...nearOffers];
 
   return (
