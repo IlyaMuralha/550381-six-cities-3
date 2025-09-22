@@ -11,15 +11,16 @@ import { AuthorizationStatus } from '../../const';
 import Map from '../../components/map/map';
 import ReviewsList from '../../components/reviews-list/reviews-list';
 import { calcRating } from '../../utils';
+import { useAppSelector } from '../../hooks/store';
 
 
 type OfferScreenProps = {
-  offers: TOffer[];
   reviews: TReview[];
   authorizationStatus:AuthorizationStatus;
 }
 
-function OfferScreen({offers, authorizationStatus, reviews}: OfferScreenProps): JSX.Element {
+function OfferScreen({ authorizationStatus, reviews}: OfferScreenProps): JSX.Element {
+  const offers = useAppSelector((state) => state.offers);
   const {id} = useParams();
   const currentCity = offers[0].city;
   const currentOffer: TOffer | undefined = offers.find((offer: TOffer) => offer.id === id);

@@ -52,7 +52,7 @@ function Map({type, city, offers, activeOffer}: MapProps): JSX.Element {
         map.removeLayer(markerLayer);
       };
     }
-  }, [activeOffer, map, offers]);
+  }, [activeOffer, map, offers, city]);
 
   return (
     <section className={clsx(`${currentClass} map`)} ref={mapContainerRef}></section>
