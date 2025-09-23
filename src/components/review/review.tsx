@@ -1,17 +1,20 @@
 import { TReview } from './types';
+import { calcRating } from '../../utils';
 
 type ReviewProps = {
   review: TReview;
 }
 
+const options = {
+  month: 'long',
+  year: 'numeric'
+} as const;
+
 function Review({review}: ReviewProps): JSX.Element {
   const {comment, date, rating, user} = review;
   const formatDate: Date = new Date(date);
-  const options = {
-    month: 'long',
-    year: 'numeric'
-  };
-  const ratingStyle = rating * 100 / 5;
+
+  const ratingStyle = calcRating(rating);
 
   return (
     <li className="reviews__item">

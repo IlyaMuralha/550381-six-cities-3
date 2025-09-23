@@ -10,17 +10,18 @@ import OfferCardList from '../../components/offer-card-list/offer-card-list';
 import { AuthorizationStatus } from '../../const';
 import Map from '../../components/map/map';
 import ReviewsList from '../../components/reviews-list/reviews-list';
+import { calcRating } from '../../utils';
+import { useAppSelector } from '../../hooks/store';
 
 
 type OfferScreenProps = {
-  offers: TOffer[];
   reviews: TReview[];
   authorizationStatus:AuthorizationStatus;
 }
 
-function OfferScreen({offers, authorizationStatus, reviews}: OfferScreenProps): JSX.Element {
+function OfferScreen({ authorizationStatus, reviews}: OfferScreenProps): JSX.Element {
+  const offers = useAppSelector((state) => state.offers);
   const {id} = useParams();
-  const currentCity = offers[0].city;
   const currentOffer: TOffer | undefined = offers.find((offer: TOffer) => offer.id === id);
 
   if (!currentOffer) {
@@ -29,9 +30,11 @@ function OfferScreen({offers, authorizationStatus, reviews}: OfferScreenProps): 
   const maxAdultsTitle = `Max ${currentOffer.maxAdults} ${currentOffer.maxAdults > 1 ? 'adults' : 'adult'}`;
   const bedroomsTitle = `${currentOffer.bedrooms} ${currentOffer.bedrooms > 1 ? 'Bedrooms' : 'Bedrooms'}`;
 
-  const ratingStyle = currentOffer.rating * 100 / 5;
+  const ratingStyle = calcRating(currentOffer.rating);
 
-  const nearOffers: TOffer[] = offers.slice(1);
+  const currentCity = currentOffer.city;
+  const nearOffers: TOffer[] = offers.filter((offer) => offer.city.name === currentCity.name);
+
   const nearOffersPlusCurrent: TOffer[] = [currentOffer, ...nearOffers];
 
   return (

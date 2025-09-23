@@ -1,4 +1,5 @@
-import { AppRoute } from './const';
+import { AppRoute, MAX_RATING } from './const';
+
 
 export const getLayoutState = (pathname: AppRoute) => {
   let mainClassName = '',
@@ -14,5 +15,7 @@ export const getLayoutState = (pathname: AppRoute) => {
     shouldRenderFooter = true;
   }
 
-  return {mainClassName, shouldRenderUser, shouldRenderFooter};
+  return { mainClassName, shouldRenderUser, shouldRenderFooter };
 };
+
+export const calcRating = (rating: number) => rating * 100 / MAX_RATING;

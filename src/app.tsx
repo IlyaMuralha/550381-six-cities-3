@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import {Route, BrowserRouter, Routes} from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from './const';
 import MainScreen from './pages/main-screen/main-screen';
@@ -8,21 +7,13 @@ import OfferScreen from './pages/offer-screen/offer-screen';
 import NotFoundScreen from './pages/not-found-screen/not-found-screen';
 import PrivateRoute from './components/private-route/private-route';
 import Layout from './layout/layout';
-import { TOffer } from './components/offer-card/types';
 import { TReview } from './components/review/types';
 
 type AppScreenProps = {
-  offerCardCount: number;
-  offers: TOffer[];
   reviews: TReview[];
 }
 
-function App({offers, offerCardCount, reviews}: AppScreenProps): JSX.Element {
-  const [activeOffer, setActiveOffer] = useState<TOffer | undefined>(undefined);
-
-  const handleOfferHover = (offer?: TOffer) => {
-    setActiveOffer(offer);
-  };
+function App({reviews}: AppScreenProps): JSX.Element {
 
   const authorizationStatus = AuthorizationStatus.Auth;
   return (
@@ -33,12 +24,7 @@ function App({offers, offerCardCount, reviews}: AppScreenProps): JSX.Element {
           element={<Layout/>}
         >
           <Route index element={
-            <MainScreen
-              offers={offers}
-              offerCardCount={offerCardCount}
-              handleHover={handleOfferHover}
-              activeOffer={activeOffer}
-            />
+            <MainScreen />
           }
           />
           <Route path={AppRoute.Login} element={<LoginScreen/>} />
@@ -46,13 +32,12 @@ function App({offers, offerCardCount, reviews}: AppScreenProps): JSX.Element {
             path={AppRoute.Favorites}
             element={
               <PrivateRoute authorizationStatus={authorizationStatus}>
-                <FavoritesScreen offers={offers}/>
+                <FavoritesScreen />
               </PrivateRoute>
             }
           />
           <Route path={AppRoute.Offer} element={
             <OfferScreen
-              offers={offers}
               authorizationStatus={authorizationStatus}
               reviews={reviews}
             />

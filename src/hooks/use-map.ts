@@ -25,10 +25,10 @@ function useMap({ location, containerRef }: useMapProps): LeafletMap | null {
       });
 
       leaflet
-        .tileLayer(
-          TILE_LAYER_URL_PATTERN, {
+        .tileLayer(TILE_LAYER_URL_PATTERN, {
           attribution: TILE_LAYER_ATTRIBUTION,
-        }).addTo(instance);
+        })
+        .addTo(instance);
 
       setMap(instance);
       isRenderedRef.current = true;

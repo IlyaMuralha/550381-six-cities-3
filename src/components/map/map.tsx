@@ -38,6 +38,12 @@ function Map({type, city, offers, activeOffer}: MapProps): JSX.Element {
 
   useEffect(() => {
     if (map) {
+      map.setView([city.location.latitude, city.location.longitude], city.location.zoom);
+    }
+  }, [map, city]);
+
+  useEffect(() => {
+    if (map) {
       const markerLayer = layerGroup().addTo(map);
       offers.forEach((offer): void => {
         leaflet

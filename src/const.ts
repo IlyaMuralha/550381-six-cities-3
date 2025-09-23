@@ -32,3 +32,5 @@ export const URL_MARKER_DEFAULT =
 
 export const URL_MARKER_ACTIVE =
   '/img/pin-active.svg';
+
+export const MAX_RATING = 5;

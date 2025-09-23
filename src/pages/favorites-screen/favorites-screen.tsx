@@ -1,11 +1,9 @@
 import OfferCardList from '../../components/offer-card-list/offer-card-list';
-import { TOffer } from '../../components/offer-card/types';
+import { useAppSelector } from '../../hooks/store';
 
-type FavoritesScreenProps = {
-  offers: TOffer[];
-}
+function FavoritesScreen(): JSX.Element {
+  const offers = useAppSelector((state) => state.offers);
 
-function FavoritesScreen({offers}: FavoritesScreenProps): JSX.Element {
   const savedOffers = offers.filter((offer) => offer.isFavorite);
   const savedCities:string[] = [];
   savedOffers.forEach((offer) => {
