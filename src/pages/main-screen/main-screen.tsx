@@ -5,6 +5,7 @@ import SortForm from '../../components/sort-form/sort-form';
 import { TOffer } from '../../components/offer-card/types';
 import { useAppSelector } from '../../hooks/store';
 import { useState } from 'react';
+import { getSortedOffers } from '../../utils';
 
 function MainScreen(): JSX.Element {
   const [activeOffer, setActiveOffer] = useState<TOffer | undefined>(undefined);
@@ -15,9 +16,12 @@ function MainScreen(): JSX.Element {
 
   const offers = useAppSelector((state) => state.offers);
   const initialCity = useAppSelector((state) => state.city);
+  const activeSort = useAppSelector((state) => state.activeSort);
   const currentOffers = offers.filter((offer) => offer.city.name === initialCity);
   const currentCity = currentOffers[0].city;
   const offerCardCount = currentOffers.length;
+
+  const sortedOffers = getSortedOffers(currentOffers, activeSort);
 
   return (
     <main className="page__main page__main--index">
@@ -30,7 +34,7 @@ function MainScreen(): JSX.Element {
             <b className="places__found">{offerCardCount} places to stay in {currentCity.name}</b>
             <SortForm />
 
-            <OfferCardList offers={currentOffers} type='mainScreen' handleHover={handleOfferHover}/>
+            <OfferCardList offers={sortedOffers} type='mainScreen' handleHover={handleOfferHover}/>
 
           </section>
           <div className="cities__right-section">

@@ -17,7 +17,7 @@ function NavTabs({currentCity}: NavTabsProps): JSX.Element {
           {CITIES.map((city) => (
             <li className="locations__item" key={city}>
               <a
-                className={`locations__item-link tabs__item ${currentCity.name !== city || 'tabs__item--active'}`}
+                className={`locations__item-link tabs__item ${currentCity.name === city && 'tabs__item--active'}`}
                 href="#"
                 onClick={(evt) => {
                   evt.preventDefault();

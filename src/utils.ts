@@ -1,4 +1,5 @@
-import { AppRoute, MAX_RATING } from './const';
+import { TOffer } from './components/offer-card/types';
+import { AppRoute, MAX_RATING, PLACE_OPTIONS } from './const';
 
 
 export const getLayoutState = (pathname: AppRoute) => {
@@ -19,3 +20,21 @@ export const getLayoutState = (pathname: AppRoute) => {
 };
 
 export const calcRating = (rating: number) => rating * 100 / MAX_RATING;
+
+export const getSortedOffers = (offers: TOffer[], activeSort: typeof PLACE_OPTIONS[number]) => {
+  let sortedOffers = offers;
+
+  switch (activeSort) {
+    case PLACE_OPTIONS[1]:
+      sortedOffers = offers.toSorted((a, b) => a.price - b.price);
+      break;
+    case PLACE_OPTIONS[2]:
+      sortedOffers = offers.toSorted((a, b) => b.price - a.price);
+      break;
+    case PLACE_OPTIONS[3]:
+      sortedOffers = offers.toSorted((a, b) => b.rating - a.rating);
+      break;
+  }
+
+  return sortedOffers;
+};

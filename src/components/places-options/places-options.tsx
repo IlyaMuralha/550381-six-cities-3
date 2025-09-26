@@ -1,10 +1,25 @@
-import { PLACES_OPTIONS } from '../../const';
+import { PLACE_OPTIONS } from '../../const';
+import { useAppDispatch } from '../../hooks/store';
+import { setActiveSort } from '../../store/action';
 
-function PlacesOptions(): JSX.Element {
+type PlacesOptionsProps = {
+  activeSort: typeof PLACE_OPTIONS[number];
+  isOpen: boolean;
+}
+
+function PlacesOptions({activeSort, isOpen}: PlacesOptionsProps): JSX.Element {
+  const dispatch = useAppDispatch();
   return (
-    <ul className="places__options places__options--custom places__options--opened">
-      {PLACES_OPTIONS.map((options) => (
-        <li className="places__option places__option--active" tabIndex={0} key={options}>{options}</li>
+    <ul className={`places__options places__options--custom ${isOpen && 'places__options--opened'}`}>
+      {PLACE_OPTIONS.map((option) => (
+        <li
+          className={`places__option ${activeSort === option && 'places__option--active'}`}
+          tabIndex={0}
+          key={option}
+          onClick={() => dispatch(setActiveSort(option))}
+        >
+          {option}
+        </li>
       ))}
     </ul>
   );
