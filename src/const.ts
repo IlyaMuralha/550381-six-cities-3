@@ -7,12 +7,12 @@ export const CITIES: string[] = [
   'Dusseldorf'
 ];
 
-export const PLACES_OPTIONS: string[] = [
+export const PLACE_OPTIONS = [
   'Popular',
   'Price: low to high',
   'Price: high to low',
   'Top rated first'
-];
+] as const;
 
 export enum AppRoute {
   Main = '/',
