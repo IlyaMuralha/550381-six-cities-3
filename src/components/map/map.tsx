@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { useEffect, useRef } from 'react';
 import leaflet, { layerGroup } from 'leaflet';
-import { TCity, TOffer } from '../offer-card/types';
+import { TCity, TOffers, TOffer } from '../offer-card/types';
 import { URL_MARKER_DEFAULT, URL_MARKER_ACTIVE } from '../../const';
 
 import 'leaflet/dist/leaflet.css';
@@ -10,7 +10,7 @@ import useMap from '../../hooks/use-map';
 type MapProps = {
   type: 'main' | 'offer';
   city: TCity;
-  offers: TOffer[];
+  offers: TOffers;
   activeOffer: TOffer | undefined;
 }
 

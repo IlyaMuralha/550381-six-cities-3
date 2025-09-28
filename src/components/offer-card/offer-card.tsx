@@ -23,7 +23,7 @@ type OfferCardProps = {
 }
 
 function OfferCard({offer, handleHover, classesForType, sizeForType}: OfferCardProps): JSX.Element {
-  const {id, title, type, price, isFavorite, isPremium, images, rating } = offer;
+  const {id, title, type, price, isFavorite, isPremium, previewImage, rating } = offer;
 
   const ratingStyle = calcRating(rating);
 
@@ -46,7 +46,7 @@ function OfferCard({offer, handleHover, classesForType, sizeForType}: OfferCardP
         <Link to={`/offer/${id}`}>
           <img
             className="place-card__image"
-            src={images[0]}
+            src={previewImage}
             width={sizeForType.width}
             height={sizeForType.height}
             alt="Place image"
