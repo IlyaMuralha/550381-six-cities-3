@@ -15,7 +15,7 @@ export type TCity = {
   location: TLocationCoordinates;
 }
 
-export type TOffer = {
+export type TSingleOffer = {
   id: string;
   title: string;
   type: string;
@@ -32,3 +32,18 @@ export type TOffer = {
   images: string[];
   maxAdults: number;
 }
+
+export type TOffer = {
+  id: string;
+  title: string;
+  type: string;
+  price: number;
+  city: TCity;
+  location: TLocationCoordinates;
+  isFavorite: boolean;
+  isPremium: boolean;
+  rating: number;
+  previewImage: string;
+}
+
+export type TOffers = TOffer[];

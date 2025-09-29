@@ -1,8 +1,8 @@
 import OfferCard from '../offer-card/offer-card';
-import { TOffer } from '../offer-card/types';
+import { TOffers, TOffer } from '../offer-card/types';
 
 type OfferCardListProps = {
-  offers: TOffer[];
+  offers: TOffers;
   type: 'mainScreen' | 'offerScreen' | 'favoriteScreen';
   handleHover?: (offer?: TOffer) => void;
 }

@@ -4,6 +4,9 @@ import { Provider } from 'react-redux';
 import App from './app';
 import { reviewsMocks } from './mocks/reviews-mocks';
 import { store } from './store';
+import { fetchOfferAction } from './store/api-actions';
+
+store.dispatch(fetchOfferAction());
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

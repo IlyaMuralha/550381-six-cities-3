@@ -8,12 +8,22 @@ import NotFoundScreen from './pages/not-found-screen/not-found-screen';
 import PrivateRoute from './components/private-route/private-route';
 import Layout from './layout/layout';
 import { TReview } from './components/review/types';
+import { useAppSelector } from './hooks/store';
+import Loader from './pages/loading-screen/loading-screen';
 
 type AppScreenProps = {
   reviews: TReview[];
 }
 
 function App({reviews}: AppScreenProps): JSX.Element {
+
+  const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
+
+  if (isOffersDataLoading) {
+    return (
+      <Loader/>
+    );
+  }
 
   const authorizationStatus = AuthorizationStatus.Auth;
   return (
