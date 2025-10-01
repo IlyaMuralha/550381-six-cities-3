@@ -1,7 +1,6 @@
 import { CITIES } from '../../const';
 import { useAppDispatch } from '../../hooks/store';
-// import { TCity } from '../offer-card/types';
-import { setCity } from '../../store/action';
+import { offersAction } from '../../store/slices/offers';
 
 type NavTabsProps = {
   currentCity: string;
@@ -21,7 +20,7 @@ function NavTabs({currentCity}: NavTabsProps): JSX.Element {
                 href="#"
                 onClick={(evt) => {
                   evt.preventDefault();
-                  dispatch(setCity(city.name));
+                  dispatch(offersAction.setCity(city.name));
                 }}
               >
                 <span>{city.name}</span>
