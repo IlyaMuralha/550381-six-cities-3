@@ -1,30 +1,45 @@
 import { useParams } from 'react-router-dom';
-import { TOffer, TOfferDetails } from '../../components/offer-card/types';
-import { TReview } from '../../components/review/types';
+import { TOffer } from '../../components/offer-card/types';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import Badge from '../../components/badge/badge';
 import OfferRating from '../../components/offer-rating/offer-rating';
 import OfferGoodsItem from '../../components/offer-goods-item/offer-goods-item';
 import ReviewsForm from '../../components/reviews-form/reviews-form';
 import OfferCardList from '../../components/offer-card-list/offer-card-list';
-import { AuthorizationStatus } from '../../const';
+import { AuthorizationStatus, RequestStatus } from '../../const';
 import Map from '../../components/map/map';
 import ReviewsList from '../../components/reviews-list/reviews-list';
 import { calcRating } from '../../utils';
-import { useAppSelector } from '../../hooks/store';
+import { useAppDispatch, useAppSelector } from '../../hooks/store';
+import { fetchComments, fetchNearOffers, fetchOffer } from '../../store/api-actions';
+import { useEffect } from 'react';
+import Loader from '../loading-screen/loading-screen';
 
 
 type OfferScreenProps = {
-  reviews: TReview[];
   authorizationStatus:AuthorizationStatus;
 }
 
-function OfferScreen({ authorizationStatus, reviews}: OfferScreenProps): JSX.Element {
-  const offers = useAppSelector((state) => state.offers.offers);
+function OfferScreen({ authorizationStatus}: OfferScreenProps): JSX.Element {
+  const dispatch = useAppDispatch();
   const {id} = useParams();
-  const currentOffer: TOfferDetails | undefined = offers.find((offer: TOfferDetails) => offer.id === id);
 
-  if (!currentOffer) {
+  const currentOffer = useAppSelector((state) => state.offer.offerDetails);
+  const nearOffers = useAppSelector((state) => state.offer.nearOffers);
+  const OfferLoadingStatus = useAppSelector((state) => state.offer.status);
+  const reviews = useAppSelector((state) => state.reviews.reviews);
+
+  useEffect(() => {
+    Promise.all([dispatch(fetchOffer(id as string)), dispatch(fetchNearOffers(id as string)), dispatch(fetchComments(id as string)),]);
+  }, [id]);
+
+  if (OfferLoadingStatus === RequestStatus.Loading) {
+    return (
+      <Loader/>
+    );
+  }
+
+  if (OfferLoadingStatus === RequestStatus.Failed || !currentOffer) {
     return <NotFoundScreen />;
   }
   const maxAdultsTitle = `Max ${currentOffer.maxAdults} ${currentOffer.maxAdults > 1 ? 'adults' : 'adult'}`;
@@ -33,7 +48,6 @@ function OfferScreen({ authorizationStatus, reviews}: OfferScreenProps): JSX.Ele
   const ratingStyle = calcRating(currentOffer.rating);
 
   const currentCity = currentOffer.city;
-  const nearOffers: TOffer[] = offers.filter((offer) => offer.city.name === currentCity.name);
 
   const nearOffersPlusCurrent: TOffer[] = [currentOffer, ...nearOffers];
 
@@ -96,25 +110,18 @@ function OfferScreen({ authorizationStatus, reviews}: OfferScreenProps): JSX.Ele
                 <div className="offer__avatar-wrapper offer__avatar-wrapper--pro user__avatar-wrapper">
                   <img
                     className="offer__avatar user__avatar"
-                    src="img/avatar-angelina.jpg"
+                    src={currentOffer.host.avatarUrl}
                     width="74"
                     height="74"
                     alt="Host avatar"
                   />
                 </div>
-                <span className="offer__user-name">Angelina</span>
-                <span className="offer__user-status">Pro</span>
+                <span className="offer__user-name">{currentOffer.host.name}</span>
+                {currentOffer.host.isPro && <span className="offer__user-status">Pro</span>}
               </div>
               <div className="offer__description">
                 <p className="offer__text">
-                  A quiet cozy and picturesque that hides behind a a river by
-                  the unique lightness of Amsterdam. The building is green and
-                  from 18th century.
-                </p>
-                <p className="offer__text">
-                  An independent House, strategically located between Rembrand
-                  Square and National Opera, but where the bustle of the city
-                  comes to rest in this alley flowery and colorful.
+                  {currentOffer.description}
                 </p>
               </div>
             </div>

@@ -24,7 +24,7 @@ function MainScreen(): JSX.Element {
       .catch(() => setFailedFetch(true));
   }, []);
 
-  const isOffersDataLoading = useAppSelector((state) => state.offers.status);
+  const OffersLoadingStatus = useAppSelector((state) => state.offers.status);
   const offers = useAppSelector((state) => state.offers.offers);
   const initialCity = useAppSelector((state) => state.offers.city);
   const activeSort = useAppSelector((state) => state.offers.activeSort);
@@ -35,7 +35,7 @@ function MainScreen(): JSX.Element {
     );
   }
 
-  if (isOffersDataLoading === RequestStatus.Loading) {
+  if (OffersLoadingStatus === RequestStatus.Loading) {
     return (
       <Loader/>
     );

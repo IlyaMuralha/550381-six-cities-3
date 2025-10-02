@@ -7,13 +7,8 @@ import OfferScreen from './pages/offer-screen/offer-screen';
 import NotFoundScreen from './pages/not-found-screen/not-found-screen';
 import PrivateRoute from './components/private-route/private-route';
 import Layout from './layout/layout';
-import { TReview } from './components/review/types';
 
-type AppScreenProps = {
-  reviews: TReview[];
-}
-
-function App({reviews}: AppScreenProps): JSX.Element {
+function App(): JSX.Element {
 
   const authorizationStatus = AuthorizationStatus.Auth;
   return (
@@ -39,7 +34,6 @@ function App({reviews}: AppScreenProps): JSX.Element {
           <Route path={AppRoute.Offer} element={
             <OfferScreen
               authorizationStatus={authorizationStatus}
-              reviews={reviews}
             />
           }
           />
