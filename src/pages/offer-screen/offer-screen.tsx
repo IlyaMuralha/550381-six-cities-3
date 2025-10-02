@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import { TOffer } from '../../components/offer-card/types';
+import { TOffer, TOfferDetails } from '../../components/offer-card/types';
 import { TReview } from '../../components/review/types';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import Badge from '../../components/badge/badge';
@@ -20,9 +20,9 @@ type OfferScreenProps = {
 }
 
 function OfferScreen({ authorizationStatus, reviews}: OfferScreenProps): JSX.Element {
-  const offers = useAppSelector((state) => state.offers);
+  const offers = useAppSelector((state) => state.offers.offers);
   const {id} = useParams();
-  const currentOffer: TOffer | undefined = offers.find((offer: TOffer) => offer.id === id);
+  const currentOffer: TOfferDetails | undefined = offers.find((offer: TOfferDetails) => offer.id === id);
 
   if (!currentOffer) {
     return <NotFoundScreen />;

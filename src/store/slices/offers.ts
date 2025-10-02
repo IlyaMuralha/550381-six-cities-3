@@ -1,12 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { CITIES, PLACE_OPTIONS } from '../../const';
+import { CITIES, PLACE_OPTIONS, RequestStatus } from '../../const';
 import { TOffers } from '../../components/offer-card/types';
+import { fetchOfferAction } from '../api-actions';
 
-type TInitialState = {
+export type TInitialState = {
   city: string;
   offers: TOffers;
   activeSort: typeof PLACE_OPTIONS[number];
   isOffersDataLoading: boolean;
+  status: RequestStatus;
 }
 
 const initialState: TInitialState = {
@@ -14,9 +16,22 @@ const initialState: TInitialState = {
   offers: [],
   activeSort: PLACE_OPTIONS[0],
   isOffersDataLoading: false,
+  status: RequestStatus.Idle
 };
 
 const offersSlice = createSlice({
+  extraReducers: (builder) =>
+    builder
+      .addCase(fetchOfferAction.pending, (state) => {
+        state.status = RequestStatus.Loading;
+      })
+      .addCase(fetchOfferAction.fulfilled, (state, action) => {
+        state.status = RequestStatus.Success;
+        state.offers = action.payload;
+      })
+      .addCase(fetchOfferAction.rejected, (state) => {
+        state.status = RequestStatus.Failed;
+      }),
   initialState,
   name: 'offers',
   reducers: {

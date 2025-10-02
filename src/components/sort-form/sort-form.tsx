@@ -5,7 +5,7 @@ import { useClickOutside } from '../../hooks/use-click-outside';
 
 function SortForm(): JSX.Element {
   const [open, setOpen] = useState(false);
-  const activeSort = useAppSelector((state) => state.activeSort);
+  const activeSort = useAppSelector((state) => state.offers.activeSort);
 
   const ref = useRef<HTMLFormElement>(null);
   const handleClickOutside = () => {

@@ -3,22 +3,48 @@ import NavTabs from '../../components/nav-tabs/nav-tabs';
 import Map from '../../components/map/map';
 import SortForm from '../../components/sort-form/sort-form';
 import { TOffer } from '../../components/offer-card/types';
-import { useAppSelector } from '../../hooks/store';
-import { useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../../hooks/store';
+import { useEffect, useState } from 'react';
 import { getSortedOffers } from '../../utils';
 import Empty from '../../components/empty/empty';
-import { CITIES } from '../../const';
+import { CITIES, RequestStatus } from '../../const';
+import Loader from '../loading-screen/loading-screen';
+import { fetchOfferAction } from '../../store/api-actions';
+import ErrorMessage from '../../components/error-message/error-message';
 
 function MainScreen(): JSX.Element {
   const [activeOffer, setActiveOffer] = useState<TOffer | undefined>(undefined);
+  const [failedFetch, setFailedFetch] = useState<boolean>(false);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(fetchOfferAction())
+      .unwrap()
+      .then(() => setFailedFetch(false))
+      .catch(() => setFailedFetch(true));
+  }, []);
+
+  const isOffersDataLoading = useAppSelector((state) => state.offers.status);
+  const offers = useAppSelector((state) => state.offers.offers);
+  const initialCity = useAppSelector((state) => state.offers.city);
+  const activeSort = useAppSelector((state) => state.offers.activeSort);
+
+  if (failedFetch) {
+    return (
+      <ErrorMessage>Что-то пошло не так, перезагрузите страницу</ErrorMessage>
+    );
+  }
+
+  if (isOffersDataLoading === RequestStatus.Loading) {
+    return (
+      <Loader/>
+    );
+  }
 
   const handleOfferHover = (offer?: TOffer) => {
     setActiveOffer(offer);
   };
 
-  const offers = useAppSelector((state) => state.offers);
-  const initialCity = useAppSelector((state) => state.city);
-  const activeSort = useAppSelector((state) => state.activeSort);
   const currentOffers = offers.filter((offer) => offer.city.name === initialCity);
   const currentCity = CITIES.filter((city) => city.name === initialCity)[0];
   const offerCardCount = currentOffers.length;
