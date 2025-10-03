@@ -3,6 +3,21 @@ import { AxiosInstance } from 'axios';
 import { TOfferDetails, TOffers } from '../components/offer-card/types';
 import { APIRoute } from '../const';
 import { TReview } from '../components/review/types';
+import { TUser } from '../types/user';
+import { dropToken, saveToken } from '../services/token';
+
+export type PostCommentProps = {
+  body: {
+    comment: string;
+    rating: number;
+  };
+  offerId: TOfferDetails['id'];
+}
+
+export type LoginData = {
+  email: string;
+  password: string;
+}
 
 export const fetchOfferAction = createAsyncThunk<TOffers, undefined, {
   extra: AxiosInstance;
@@ -40,19 +55,39 @@ export const fetchComments = createAsyncThunk<TReview[], TOfferDetails['id'], {
   },
 );
 
-export type PostCommentProps = {
-  body: {
-    comment: string;
-    rating: number;
-  };
-  offerId: TOfferDetails['id'];
-}
-
 export const postComment = createAsyncThunk<TReview, PostCommentProps, {
   extra: AxiosInstance;
 }>(
   'data/postComment', async ({ body, offerId }, { extra: api }) => {
     const { data } = await api.post<TReview>(`${APIRoute.Comments}/${offerId}`, body);
     return data;
+  },
+);
+
+export const checkAuth = createAsyncThunk<TUser, undefined, {
+  extra: AxiosInstance;
+}>(
+  'auth/checkAuth', async (_arg, { extra: api }) => {
+    const { data } = await api.get<TUser>(APIRoute.Login);
+    return data;
+  },
+);
+
+export const login = createAsyncThunk<TUser, LoginData, {
+  extra: AxiosInstance;
+}>(
+  'auth/login', async (body, { extra: api }) => {
+    const { data } = await api.post<TUser>(APIRoute.Login, body);
+    saveToken(data.token);
+    return data;
+  },
+);
+
+export const logout = createAsyncThunk<unknown, undefined, {
+  extra: AxiosInstance;
+}>(
+  'auth/logout', async (_, { extra: api }) => {
+    await api.delete(APIRoute.Logout);
+    dropToken();
   },
 );

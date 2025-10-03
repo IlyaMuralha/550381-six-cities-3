@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import { TOffer } from '../../components/offer-card/types';
+import { TOffers } from '../../components/offer-card/types';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import Badge from '../../components/badge/badge';
 import OfferRating from '../../components/offer-rating/offer-rating';
@@ -49,7 +49,7 @@ function OfferScreen({ authorizationStatus}: OfferScreenProps): JSX.Element {
 
   const currentCity = currentOffer.city;
 
-  const nearOffersPlusCurrent: TOffer[] = [currentOffer, ...nearOffers];
+  const nearOffersPlusCurrent: TOffers = [currentOffer, ...nearOffers];
 
   return (
     <main className="page__main page__main--offer">

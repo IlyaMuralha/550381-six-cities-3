@@ -1,5 +1,5 @@
 import {Route, BrowserRouter, Routes} from 'react-router-dom';
-import { AppRoute, AuthorizationStatus } from './const';
+import { AppRoute } from './const';
 import MainScreen from './pages/main-screen/main-screen';
 import LoginScreen from './pages/login-screen/login-screen';
 import FavoritesScreen from './pages/favorites-screen/favorites-screen';
@@ -7,10 +7,21 @@ import OfferScreen from './pages/offer-screen/offer-screen';
 import NotFoundScreen from './pages/not-found-screen/not-found-screen';
 import PrivateRoute from './components/private-route/private-route';
 import Layout from './layout/layout';
+import { useAppDispatch, useAppSelector } from './hooks/store';
+import { getToken } from './services/token';
+import { useEffect } from 'react';
+import { checkAuth } from './store/api-actions';
 
 function App(): JSX.Element {
+  const dispatch = useAppDispatch();
+  const authorizationStatus = useAppSelector((state) => state.user.status);
+  const token = getToken();
+  useEffect(() => {
+    if (token) {
+      dispatch(checkAuth());
+    }
+  }, [token]);
 
-  const authorizationStatus = AuthorizationStatus.Auth;
   return (
     <BrowserRouter>
       <Routes>
