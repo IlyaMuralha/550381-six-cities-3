@@ -1,15 +1,30 @@
-import { Navigate } from 'react-router-dom';
-import { AppRoute, AuthorizationStatus } from '../../const';
+import { Navigate, useLocation, Location } from 'react-router-dom';
+import { AppRoute } from '../../const';
+import { useAppSelector } from '../../hooks/store';
+import { ReactNode } from 'react';
 
-type PrivateRouteProps = {
-  authorizationStatus: AuthorizationStatus;
-  children: JSX.Element;
+type ProtectedRouteProps = {
+  children: ReactNode;
+  onlyUnAuth?: boolean;
 }
 
-function PrivateRoute({authorizationStatus, children}: PrivateRouteProps) :JSX.Element {
-  return (
-    authorizationStatus === AuthorizationStatus.Auth ? children : <Navigate to={AppRoute.Login}/>
-  );
+type FromState = {
+  from?:Location;
 }
 
-export default PrivateRoute;
+export default function ProtectedRoute({children, onlyUnAuth}: ProtectedRouteProps) {
+  const location: Location<FromState> = useLocation() as Location<FromState>;
+
+  const user = useAppSelector((state) => state.user.user);
+
+  if (onlyUnAuth && user) {
+    const from = location.state?.from || {pathname: AppRoute.Main};
+    return <Navigate to={from} />;
+  }
+
+  if (!onlyUnAuth && !user) {
+    return <Navigate state={{from: location}} to={AppRoute.Login} />;
+  }
+
+  return children;
+}

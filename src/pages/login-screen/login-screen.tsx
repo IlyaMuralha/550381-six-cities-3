@@ -1,8 +1,6 @@
 import { FormEvent, ReactEventHandler, useState } from 'react';
 import { useAppDispatch } from '../../hooks/store';
 import { login } from '../../store/api-actions';
-import { useNavigate } from 'react-router-dom';
-import { AppRoute } from '../../const';
 
 type HTMLLoginForm = HTMLFormElement & {
   email: HTMLInputElement;
@@ -18,7 +16,6 @@ function LoginScreen(): JSX.Element {
   });
 
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
 
   const handleChange: ChangeHandler = (evt) => {
     const {name, value} = evt.currentTarget;
@@ -30,7 +27,7 @@ function LoginScreen(): JSX.Element {
 
   function handleSubmit(evt: FormEvent<HTMLLoginForm>) {
     evt.preventDefault();
-    dispatch(login(formData)).then(() => navigate(AppRoute.Main));
+    dispatch(login(formData));
   }
 
   return (
