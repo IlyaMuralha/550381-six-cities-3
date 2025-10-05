@@ -1,6 +1,6 @@
 import { Fragment, useState, ChangeEvent, FormEvent } from 'react';
 import { useAppDispatch } from '../../hooks/store';
-import { postComment, PostCommentProps } from '../../store/api-actions';
+import { postComment } from '../../store/api-actions';
 import { useParams } from 'react-router';
 
 const CHARACTERS = {

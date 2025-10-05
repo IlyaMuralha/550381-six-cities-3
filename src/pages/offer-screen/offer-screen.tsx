@@ -9,7 +9,7 @@ import OfferCardList from '../../components/offer-card-list/offer-card-list';
 import { AuthorizationStatus, RequestStatus } from '../../const';
 import Map from '../../components/map/map';
 import ReviewsList from '../../components/reviews-list/reviews-list';
-import { calcRating } from '../../utils';
+import { calcRating, ucFirst } from '../../utils';
 import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import { fetchComments, fetchNearOffers, fetchOffer } from '../../store/api-actions';
 import { useEffect } from 'react';
@@ -25,7 +25,7 @@ function OfferScreen({ authorizationStatus}: OfferScreenProps): JSX.Element {
   const {id} = useParams();
 
   const currentOffer = useAppSelector((state) => state.offer.offerDetails);
-  const nearOffers = useAppSelector((state) => state.offer.nearOffers);
+  const nearOffers = useAppSelector((state) => state.offer.nearOffers).slice(0, 3);
   const OfferLoadingStatus = useAppSelector((state) => state.offer.status);
   const reviews = useAppSelector((state) => state.reviews.reviews);
 
@@ -85,7 +85,7 @@ function OfferScreen({ authorizationStatus}: OfferScreenProps): JSX.Element {
 
             <ul className="offer__features">
               <li className="offer__feature offer__feature--entire">
-                {currentOffer.type}
+                {ucFirst(currentOffer.type)}
               </li>
               <li className="offer__feature offer__feature--bedrooms">
                 {bedroomsTitle}
