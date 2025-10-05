@@ -6,11 +6,9 @@ import { TReview } from '../components/review/types';
 import { TUser } from '../types/user';
 import { dropToken, saveToken } from '../services/token';
 
-export type PostCommentProps = {
-  body: {
-    comment: string;
-    rating: number;
-  };
+export type PostCommentPayload = {
+  comment: string;
+  rating: number;
   offerId: TOfferDetails['id'];
 }
 
@@ -55,11 +53,11 @@ export const fetchComments = createAsyncThunk<TReview[], TOfferDetails['id'], {
   },
 );
 
-export const postComment = createAsyncThunk<TReview, PostCommentProps, {
+export const postComment = createAsyncThunk<TReview, PostCommentPayload, {
   extra: AxiosInstance;
 }>(
-  'data/postComment', async ({ body, offerId }, { extra: api }) => {
-    const { data } = await api.post<TReview>(`${APIRoute.Comments}/${offerId}`, body);
+  'data/postComment', async ({ comment, rating, offerId }, { extra: api }) => {
+    const { data } = await api.post<TReview>(`${APIRoute.Comments}/${offerId}`, { comment, rating });
     return data;
   },
 );

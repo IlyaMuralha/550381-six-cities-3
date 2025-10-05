@@ -28,20 +28,27 @@ function OfferScreen({ authorizationStatus}: OfferScreenProps): JSX.Element {
 
   const currentOffer = useAppSelector(offerSelectors.offerDetails);
   const nearOffers = useAppSelector(offerSelectors.nearOffers).slice(0, 3);
-  const OfferLoadingStatus = useAppSelector(offerSelectors.statusOffer);
+  const offerLoadingStatus = useAppSelector(offerSelectors.statusOffer);
   const reviews = useAppSelector(reviewsSelectors.reviews);
 
   useEffect(() => {
-    Promise.all([dispatch(fetchOffer(id as string)), dispatch(fetchNearOffers(id as string)), dispatch(fetchComments(id as string)),]);
+    if (!id) {
+      return;
+    }
+    Promise.all([
+      dispatch(fetchOffer(id)),
+      dispatch(fetchNearOffers(id)),
+      dispatch(fetchComments(id)),
+    ]);
   }, [id, dispatch]);
 
-  if (OfferLoadingStatus === RequestStatus.Loading) {
+  if (offerLoadingStatus === RequestStatus.Loading) {
     return (
       <Loader/>
     );
   }
 
-  if (OfferLoadingStatus === RequestStatus.Failed || !currentOffer) {
+  if (offerLoadingStatus === RequestStatus.Failed || !currentOffer) {
     return <NotFoundScreen />;
   }
   const maxAdultsTitle = `Max ${currentOffer.maxAdults} ${currentOffer.maxAdults > 1 ? 'adults' : 'adult'}`;

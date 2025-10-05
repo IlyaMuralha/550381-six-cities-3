@@ -25,7 +25,7 @@ const validateLoginForm = (data: HTMLLoginForm): boolean => {
     toast.error('Пароль обязателен');
     return false;
   }
-  // Проверка, что пароль содержит минимум одну букву и одну цифру
+
   if (!/(?=.*[a-zA-Z])/.test(data.password) || !/(?=.*\d)/.test(data.password)) {
     toast.error('Пароль должен содержать минимум одну букву и одну цифру');
     return false;
