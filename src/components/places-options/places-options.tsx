@@ -1,6 +1,6 @@
 import { PLACE_OPTIONS } from '../../const';
 import { useAppDispatch } from '../../hooks/store';
-import { setActiveSort } from '../../store/action';
+import { offersAction } from '../../store/slices/offers';
 
 type PlacesOptionsProps = {
   activeSort: typeof PLACE_OPTIONS[number];
@@ -16,7 +16,7 @@ function PlacesOptions({activeSort, isOpen}: PlacesOptionsProps): JSX.Element {
           className={`places__option ${activeSort === option && 'places__option--active'}`}
           tabIndex={0}
           key={option}
-          onClick={() => dispatch(setActiveSort(option))}
+          onClick={() => dispatch(offersAction.setActiveSort(option))}
         >
           {option}
         </li>

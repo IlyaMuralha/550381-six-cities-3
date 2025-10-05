@@ -80,5 +80,11 @@ export const URL_MARKER_ACTIVE =
 export const MAX_RATING = 5;
 
 export enum APIRoute {
-  Offers = '/offers'
+  Offers = '/offers',
+  Comments = '/comments',
+  Favorite = '/favorite',
+  Login = '/login',
+  Logout = '/logout',
 }
+
+export const enum RequestStatus { Idle, Loading, Success, Failed }

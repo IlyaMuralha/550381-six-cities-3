@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import Badge from '../badge/badge';
 import { TOffer } from './types';
 import Bookmark from '../bookmark/bookmark';
-import { calcRating } from '../../utils';
+import { calcRating, ucFirst } from '../../utils';
 
 type TClassesForType = {
   container: string;
@@ -70,7 +70,7 @@ function OfferCard({offer, handleHover, classesForType, sizeForType}: OfferCardP
         <h2 className="place-card__name">
           <a href="#">{title}</a>
         </h2>
-        <p className="place-card__type">{type}</p>
+        <p className="place-card__type">{ucFirst(type)}</p>
       </div>
     </article>
   );

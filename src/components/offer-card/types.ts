@@ -15,24 +15,6 @@ export type TCity = {
   location: TLocationCoordinates;
 }
 
-export type TSingleOffer = {
-  id: string;
-  title: string;
-  type: string;
-  price: number;
-  city: TCity;
-  location: TLocationCoordinates;
-  isFavorite: boolean;
-  isPremium: boolean;
-  rating: number;
-  description: string;
-  bedrooms: number;
-  goods: string[];
-  host: THost;
-  images: string[];
-  maxAdults: number;
-}
-
 export type TOffer = {
   id: string;
   title: string;
@@ -45,5 +27,14 @@ export type TOffer = {
   rating: number;
   previewImage: string;
 }
+
+export type TOfferDetails = {
+  description: string;
+  bedrooms: number;
+  goods: string[];
+  host: THost;
+  images: string[];
+  maxAdults: number;
+} & TOffer
 
 export type TOffers = TOffer[];
