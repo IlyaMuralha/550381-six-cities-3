@@ -1,13 +1,38 @@
 import { FormEvent, ReactEventHandler, useState } from 'react';
 import { useAppDispatch } from '../../hooks/store';
 import { login } from '../../store/api-actions';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-type HTMLLoginForm = HTMLFormElement & {
-  email: HTMLInputElement;
-  password: HTMLInputElement;
+type HTMLLoginForm = {
+  email: string;
+  password: string;
 };
 
 type ChangeHandler = ReactEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+
+const validateLoginForm = (data: HTMLLoginForm): boolean => {
+  if (!data.email) {
+    toast.error('Email обязателен');
+    return false;
+  }
+  if (!/\S+@\S+\.\S+/.test(data.email)) {
+    toast.error('Некорректный формат email');
+    return false;
+  }
+
+  if (!data.password) {
+    toast.error('Пароль обязателен');
+    return false;
+  }
+  // Проверка, что пароль содержит минимум одну букву и одну цифру
+  if (!/(?=.*[a-zA-Z])/.test(data.password) || !/(?=.*\d)/.test(data.password)) {
+    toast.error('Пароль должен содержать минимум одну букву и одну цифру');
+    return false;
+  }
+
+  return true;
+};
 
 function LoginScreen(): JSX.Element {
   const [formData, setFormData] = useState({
@@ -25,9 +50,11 @@ function LoginScreen(): JSX.Element {
     });
   };
 
-  function handleSubmit(evt: FormEvent<HTMLLoginForm>) {
+  function handleSubmit(evt: FormEvent<HTMLFormElement>) {
     evt.preventDefault();
-    dispatch(login(formData));
+    if (validateLoginForm(formData)) {
+      dispatch(login(formData));
+    }
   }
 
   return (
@@ -46,6 +73,7 @@ function LoginScreen(): JSX.Element {
             </div>
             <button className="login__submit form__submit button" type="submit">Sign in</button>
           </form>
+          <ToastContainer/>
         </section>
         <section className="locations locations--login locations--current">
           <div className="locations__item">
