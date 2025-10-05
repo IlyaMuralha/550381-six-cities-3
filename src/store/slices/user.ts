@@ -31,6 +31,9 @@ function processLoading(state: TUserState) {
 }
 
 const userSlice = createSlice({
+  initialState,
+  name: 'user',
+  reducers: {},
   extraReducers: (builder) =>
     builder
       .addCase(checkAuth.pending, processLoading)
@@ -43,11 +46,18 @@ const userSlice = createSlice({
         state.user = null;
         state.status = AuthorizationStatus.NoAuth;
       }),
-  initialState,
-  name: 'user',
-  reducers: {},
+  selectors: {
+    user: (state: TUserState) => state.user,
+    authorizationStatus: (state: TUserState) => state.status,
+    requestStatus: (state: TUserState) => state.requestStatus,
+  }
 });
 
 const userAction = userSlice.actions;
+const userSelectors = userSlice.selectors;
 
-export { userAction, userSlice };
+export {
+  userAction,
+  userSlice,
+  userSelectors
+};

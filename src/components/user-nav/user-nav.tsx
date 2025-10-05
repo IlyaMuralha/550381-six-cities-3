@@ -3,10 +3,11 @@ import { AppRoute } from '../../const';
 import { useAuth } from '../../hooks/user-authorization';
 import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import { logout } from '../../store/api-actions';
+import { userSelectors } from '../../store/slices/user';
 
 function UserNav() :JSX.Element {
   const isAuthorized = useAuth();
-  const user = useAppSelector((state) => state.user.user);
+  const user = useAppSelector(userSelectors.user);
   const dispatch = useAppDispatch();
 
   return (

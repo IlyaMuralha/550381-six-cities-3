@@ -11,6 +11,7 @@ import { CITIES, RequestStatus } from '../../const';
 import Loader from '../loading-screen/loading-screen';
 import { fetchOfferAction } from '../../store/api-actions';
 import ErrorMessage from '../../components/error-message/error-message';
+import { offersSelectors } from '../../store/slices/offers';
 
 function MainScreen(): JSX.Element {
   const [activeOffer, setActiveOffer] = useState<TOffer | undefined>(undefined);
@@ -25,9 +26,9 @@ function MainScreen(): JSX.Element {
   }, []);
 
   const OffersLoadingStatus = useAppSelector((state) => state.offers.status);
-  const offers = useAppSelector((state) => state.offers.offers);
-  const initialCity = useAppSelector((state) => state.offers.city);
-  const activeSort = useAppSelector((state) => state.offers.activeSort);
+  const offers = useAppSelector(offersSelectors.offers);
+  const initialCity = useAppSelector(offersSelectors.city);
+  const activeSort = useAppSelector(offersSelectors.activeSort);
 
   if (failedFetch) {
     return (

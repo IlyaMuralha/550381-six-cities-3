@@ -2,10 +2,11 @@ import { useRef, useState } from 'react';
 import PlacesOptions from '../places-options/places-options';
 import { useAppSelector } from '../../hooks/store';
 import { useClickOutside } from '../../hooks/use-click-outside';
+import { offersSelectors } from '../../store/slices/offers';
 
 function SortForm(): JSX.Element {
   const [open, setOpen] = useState(false);
-  const activeSort = useAppSelector((state) => state.offers.activeSort);
+  const activeSort = useAppSelector(offersSelectors.activeSort);
 
   const ref = useRef<HTMLFormElement>(null);
   const handleClickOutside = () => {

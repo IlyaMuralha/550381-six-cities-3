@@ -5,23 +5,23 @@ import LoginScreen from './pages/login-screen/login-screen';
 import FavoritesScreen from './pages/favorites-screen/favorites-screen';
 import OfferScreen from './pages/offer-screen/offer-screen';
 import NotFoundScreen from './pages/not-found-screen/not-found-screen';
-// import PrivateRoute from './components/private-route/private-route';
 import ProtectedRoute from './components/private-route/private-route';
 import Layout from './layout/layout';
 import { useAppDispatch, useAppSelector } from './hooks/store';
 import { getToken } from './services/token';
 import { useEffect } from 'react';
 import { checkAuth } from './store/api-actions';
+import { userSelectors } from './store/slices/user';
 
 function App(): JSX.Element {
   const dispatch = useAppDispatch();
-  const authorizationStatus = useAppSelector((state) => state.user.status);
+  const authorizationStatus = useAppSelector(userSelectors.authorizationStatus);
   const token = getToken();
   useEffect(() => {
     if (token) {
       dispatch(checkAuth());
     }
-  }, [token]);
+  }, [token, dispatch]);
 
   return (
     <BrowserRouter>

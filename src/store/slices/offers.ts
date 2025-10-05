@@ -20,18 +20,6 @@ const initialState: TInitialState = {
 };
 
 const offersSlice = createSlice({
-  extraReducers: (builder) =>
-    builder
-      .addCase(fetchOfferAction.pending, (state) => {
-        state.status = RequestStatus.Loading;
-      })
-      .addCase(fetchOfferAction.fulfilled, (state, action) => {
-        state.status = RequestStatus.Success;
-        state.offers = action.payload;
-      })
-      .addCase(fetchOfferAction.rejected, (state) => {
-        state.status = RequestStatus.Failed;
-      }),
   initialState,
   name: 'offers',
   reducers: {
@@ -41,15 +29,35 @@ const offersSlice = createSlice({
     setActiveSort: (state, action: PayloadAction<typeof PLACE_OPTIONS[number]>) => {
       state.activeSort = action.payload;
     },
-    loadOffers: (state, action: PayloadAction<TOffers>) => {
-      state.offers = action.payload;
-    },
     setOffersDataLoadingStatus: (state, action: PayloadAction<boolean>) => {
       state.isOffersDataLoading = action.payload;
     },
   },
+  extraReducers: (builder) =>
+    builder.addCase(fetchOfferAction.pending, (state) => {
+      state.status = RequestStatus.Loading;
+    })
+      .addCase(fetchOfferAction.fulfilled, (state, action) => {
+        state.status = RequestStatus.Success;
+        state.offers = action.payload;
+      })
+      .addCase(fetchOfferAction.rejected, (state) => {
+        state.status = RequestStatus.Failed;
+      }),
+  selectors: {
+    city: (state: TInitialState) => state.city,
+    offers: (state: TInitialState) => state.offers,
+    statusOffers: (state: TInitialState) => state.status,
+    activeSort: (state: TInitialState) => state.activeSort,
+    isOffersDataLoading: (state: TInitialState) => state.isOffersDataLoading,
+  }
 });
 
 const offersAction = offersSlice.actions;
+const offersSelectors = offersSlice.selectors;
 
-export { offersAction, offersSlice };
+export {
+  offersAction,
+  offersSlice,
+  offersSelectors
+};

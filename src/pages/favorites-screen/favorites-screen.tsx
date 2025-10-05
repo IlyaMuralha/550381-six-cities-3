@@ -1,8 +1,9 @@
 import OfferCardList from '../../components/offer-card-list/offer-card-list';
 import { useAppSelector } from '../../hooks/store';
+import { offersSelectors } from '../../store/slices/offers';
 
 function FavoritesScreen(): JSX.Element {
-  const offers = useAppSelector((state) => state.offers.offers);
+  const offers = useAppSelector(offersSelectors.offers);
 
   const savedOffers = offers.filter((offer) => offer.isFavorite);
   const savedCities:string[] = [];

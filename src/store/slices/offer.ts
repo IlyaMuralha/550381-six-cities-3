@@ -16,6 +16,9 @@ const initialState: TOfferState = {
 };
 
 const offerSlice = createSlice({
+  initialState,
+  name: 'offer',
+  reducers: {},
   extraReducers: (builder) =>
     builder
       .addCase(fetchOffer.pending, (state) => {
@@ -31,16 +34,18 @@ const offerSlice = createSlice({
       .addCase(fetchNearOffers.fulfilled, (state, action: PayloadAction<TOffers>) => {
         state.nearOffers = action.payload;
       }),
-  initialState,
-  name: 'offer',
-  reducers: {
-    clear(state) {
-      state.offerDetails = null;
-      state.nearOffers = [];
-    }
-  },
+  selectors: {
+    offerDetails: (state: TOfferState) => state.offerDetails,
+    nearOffers: (state: TOfferState) => state.nearOffers,
+    statusOffer: (state: TOfferState) => state.status
+  }
 });
 
 const offerAction = offerSlice.actions;
+const offerSelectors = offerSlice.selectors;
 
-export { offerAction, offerSlice };
+export {
+  offerAction,
+  offerSlice,
+  offerSelectors
+};

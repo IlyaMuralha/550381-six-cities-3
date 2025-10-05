@@ -14,6 +14,8 @@ import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import { fetchComments, fetchNearOffers, fetchOffer } from '../../store/api-actions';
 import { useEffect } from 'react';
 import Loader from '../loading-screen/loading-screen';
+import { offerSelectors } from '../../store/slices/offer';
+import { reviewsSelectors } from '../../store/slices/reviews';
 
 
 type OfferScreenProps = {
@@ -24,14 +26,14 @@ function OfferScreen({ authorizationStatus}: OfferScreenProps): JSX.Element {
   const dispatch = useAppDispatch();
   const {id} = useParams();
 
-  const currentOffer = useAppSelector((state) => state.offer.offerDetails);
-  const nearOffers = useAppSelector((state) => state.offer.nearOffers).slice(0, 3);
-  const OfferLoadingStatus = useAppSelector((state) => state.offer.status);
-  const reviews = useAppSelector((state) => state.reviews.reviews);
+  const currentOffer = useAppSelector(offerSelectors.offerDetails);
+  const nearOffers = useAppSelector(offerSelectors.nearOffers).slice(0, 3);
+  const OfferLoadingStatus = useAppSelector(offerSelectors.statusOffer);
+  const reviews = useAppSelector(reviewsSelectors.reviews);
 
   useEffect(() => {
     Promise.all([dispatch(fetchOffer(id as string)), dispatch(fetchNearOffers(id as string)), dispatch(fetchComments(id as string)),]);
-  }, [id]);
+  }, [id, dispatch]);
 
   if (OfferLoadingStatus === RequestStatus.Loading) {
     return (

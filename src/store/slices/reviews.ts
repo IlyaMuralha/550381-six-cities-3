@@ -14,6 +14,9 @@ const initialState: TReviewsState = {
 };
 
 const reviewsSlice = createSlice({
+  initialState,
+  name: 'reviews',
+  reducers: {},
   extraReducers: (builder) =>
     builder
       .addCase(fetchComments.pending, (state) => {
@@ -36,11 +39,17 @@ const reviewsSlice = createSlice({
       .addCase(postComment.rejected, (state) => {
         state.status = RequestStatus.Failed;
       }),
-  initialState,
-  name: 'reviews',
-  reducers: {},
+  selectors: {
+    reviews: (state: TReviewsState) => state.reviews,
+    reviewStatus: (state: TReviewsState) => state.status,
+  }
 });
 
 const reviewsAction = reviewsSlice.actions;
+const reviewsSelectors = reviewsSlice.selectors;
 
-export { reviewsAction, reviewsSlice };
+export {
+  reviewsAction,
+  reviewsSlice,
+  reviewsSelectors
+};
