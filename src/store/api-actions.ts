@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosInstance } from 'axios';
 import { TOfferDetails, TOffers } from '../components/offer-card/types';
-import { APIRoute } from '../const';
+import { APIRoute, FavoriteStatus } from '../const';
 import { TReview } from '../components/review/types';
 import { TUser } from '../types/user';
 import { dropToken, saveToken } from '../services/token';
@@ -15,6 +15,16 @@ export type PostCommentPayload = {
 export type LoginData = {
   email: string;
   password: string;
+}
+
+export type ChangeFavorites = {
+  offerId: string;
+  status: FavoriteStatus;
+}
+
+export type ChangeResponse = {
+  offer: TOfferDetails;
+  status: FavoriteStatus;
 }
 
 export const fetchOfferAction = createAsyncThunk<TOffers, undefined, {
@@ -87,5 +97,23 @@ export const logout = createAsyncThunk<unknown, undefined, {
   'auth/logout', async (_, { extra: api }) => {
     await api.delete(APIRoute.Logout);
     dropToken();
+  },
+);
+
+export const fetchFavorites = createAsyncThunk<TOffers, undefined, {
+  extra: AxiosInstance;
+}>(
+  'data/fetchFavorites', async (_arg, { extra: api }) => {
+    const { data } = await api.get<TOffers>(APIRoute.Favorite);
+    return data;
+  },
+);
+
+export const changeFavorites = createAsyncThunk<ChangeResponse, ChangeFavorites, {
+  extra: AxiosInstance;
+}>(
+  'data/changeFavorites', async ({ offerId, status }, { extra: api }) => {
+    const { data } = await api.post<TOfferDetails>(`${APIRoute.Favorite}/${offerId}/${status}`);
+    return { offer: data, status };
   },
 );

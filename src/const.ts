@@ -71,6 +71,11 @@ export enum AuthorizationStatus {
   Unknown = 'UNKNOWN'
 }
 
+export enum FavoriteStatus {
+  Added = 1,
+  Removed = 0
+}
+
 export const URL_MARKER_DEFAULT =
   '/img/pin.svg';
 
