@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import { useAppDispatch } from '../../hooks/store';
-import { changeFavorites, fetchOffer, fetchOfferAction } from '../../store/api-actions';
+import { changeFavorites } from '../../store/api-actions';
+import { useState } from 'react';
 
 type BookmarksProps = {
   isFavorite: boolean;
@@ -20,22 +21,22 @@ const Sizes = {
 };
 
 function Bookmark({type, isFavorite, offerId}:BookmarksProps): JSX.Element {
+  const [activ, setActive] = useState(isFavorite ? isFavorite : false);
 
   const dispatch = useAppDispatch();
   function handleClick() {
     dispatch(changeFavorites({
       offerId,
-      status: Number(!isFavorite)
+      status: Number(!activ)
     }))
       .unwrap()
       .then(() => {
-        dispatch(fetchOfferAction());
-        dispatch(fetchOffer(offerId));
+        dispatch(() => setActive(!activ));
       });
   }
   return (
     <button
-      className={clsx(`${type}__bookmark-button button`, isFavorite && 'place-card__bookmark-button--active')}
+      className={clsx(`${type}__bookmark-button button`, activ && 'place-card__bookmark-button--active')}
       type="button"
       onClick={handleClick}
     >
