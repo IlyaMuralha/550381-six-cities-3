@@ -1,11 +1,10 @@
 import { useAppSelector } from '../../hooks/store';
-import { offersSelectors } from '../../store/slices/offers';
+import { favoritesSelectors } from '../../store/slices/favorites';
 import OfferCardList from '../offer-card-list/offer-card-list';
 
 function FavoritesList(): JSX.Element {
-  const offers = useAppSelector(offersSelectors.offers);
 
-  const savedOffers = offers.filter((offer) => offer.isFavorite);
+  const savedOffers = useAppSelector(favoritesSelectors.favorites);
   const savedCities:string[] = [];
   savedOffers.forEach((offer) => {
     savedCities.push(offer.city.name);

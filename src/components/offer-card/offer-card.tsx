@@ -59,7 +59,7 @@ function OfferCard({offer, handleHover, classesForType, sizeForType}: OfferCardP
             <b className="place-card__price-value">&euro;{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <Bookmark isFavorite={isFavorite}/>
+          <Bookmark type={'place-card'} offerId={id} isFavorite={isFavorite}/>
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">

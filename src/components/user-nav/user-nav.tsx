@@ -4,11 +4,13 @@ import { useAuth } from '../../hooks/user-authorization';
 import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import { logout } from '../../store/api-actions';
 import { userSelectors } from '../../store/slices/user';
+import { useFavoriteCount } from '../../hooks/use-favorite-count';
 
 function UserNav() :JSX.Element {
   const isAuthorized = useAuth();
   const user = useAppSelector(userSelectors.user);
   const dispatch = useAppDispatch();
+  const favoriteCount = useFavoriteCount();
 
   return (
     <nav className="header__nav">
@@ -20,7 +22,7 @@ function UserNav() :JSX.Element {
                 <div className="header__avatar-wrapper user__avatar-wrapper">
                 </div>
                 <span className="header__user-name user__name">{user?.email}</span>
-                <span className="header__favorite-count">3</span>
+                <span className="header__favorite-count">{favoriteCount}</span>
               </Link>
             </li>
             <li className="header__nav-item">
