@@ -1,4 +1,5 @@
 import { TOffer } from './components/offer-card/types';
+import { TReview } from './components/review/types';
 import { AppRoute, MAX_RATING, PLACE_OPTIONS } from './const';
 
 
@@ -45,4 +46,8 @@ export function ucFirst(str: string) {
   }
 
   return str[0].toUpperCase() + str.slice(1);
+}
+
+export function getReverseAndSliceArray(arr: TReview[], maxLength: number): TReview[] {
+  return [...arr].reverse().slice(0, maxLength);
 }

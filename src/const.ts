@@ -88,3 +88,5 @@ export enum APIRoute {
 }
 
 export const enum RequestStatus { Idle, Loading, Success, Failed }
+
+export const MAX_VISIBLE_REVIEWS = 10;

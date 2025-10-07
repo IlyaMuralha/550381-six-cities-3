@@ -6,10 +6,10 @@ import OfferRating from '../../components/offer-rating/offer-rating';
 import OfferGoodsItem from '../../components/offer-goods-item/offer-goods-item';
 import ReviewsForm from '../../components/reviews-form/reviews-form';
 import OfferCardList from '../../components/offer-card-list/offer-card-list';
-import { AuthorizationStatus, RequestStatus } from '../../const';
+import { AuthorizationStatus, MAX_VISIBLE_REVIEWS, RequestStatus } from '../../const';
 import Map from '../../components/map/map';
 import ReviewsList from '../../components/reviews-list/reviews-list';
-import { calcRating, ucFirst } from '../../utils';
+import { calcRating, getReverseAndSliceArray, ucFirst } from '../../utils';
 import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import { fetchComments, fetchNearOffers, fetchOffer } from '../../store/api-actions';
 import { useEffect } from 'react';
@@ -59,6 +59,8 @@ function OfferScreen({ authorizationStatus}: OfferScreenProps): JSX.Element {
   const currentCity = currentOffer.city;
 
   const nearOffersPlusCurrent: TOffers = [currentOffer, ...nearOffers];
+
+  const visibleReviews = getReverseAndSliceArray(reviews, MAX_VISIBLE_REVIEWS);
 
   return (
     <main className="page__main page__main--offer">
@@ -138,7 +140,7 @@ function OfferScreen({ authorizationStatus}: OfferScreenProps): JSX.Element {
               <h2 className="reviews__title">
                 Reviews &middot; <span className="reviews__amount">{reviews.length}</span>
               </h2>
-              <ReviewsList reviews={reviews}/>
+              <ReviewsList reviews={visibleReviews}/>
               {authorizationStatus === AuthorizationStatus.Auth && <ReviewsForm />}
             </section>
           </div>

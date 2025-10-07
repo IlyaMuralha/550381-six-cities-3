@@ -11,18 +11,18 @@ const CHARACTERS = {
 };
 
 const rating = [
-  {value: 5, label: 'perfect'},
-  {value: 4, label: 'good'},
-  {value: 3, label: 'not bad'},
-  {value: 2, label: 'badly'},
-  {value: 1, label: 'terribly'}
+  {value: '5', label: 'perfect'},
+  {value: '4', label: 'good'},
+  {value: '3', label: 'not bad'},
+  {value: '2', label: 'badly'},
+  {value: '1', label: 'terribly'}
 ];
 
 function ReviewsForm(): JSX.Element {
   const dispatch = useAppDispatch();
   const { id } = useParams<{ id: string }>();
 
-  const [review, setReview] = useState({rating: 0, comment: ''});
+  const [review, setReview] = useState({rating: '0', comment: ''});
 
   const handleChangeReview = (evt:ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const {name, value} = evt.target;
@@ -42,7 +42,7 @@ function ReviewsForm(): JSX.Element {
       rating: Number(review.rating)
     }))
       .unwrap()
-      .then(() => setReview({rating: 0,comment: ''}))
+      .then(() => setReview({rating: '0',comment: ''}))
       .catch(() => toast.error('Не удалось отправить комментарий'));
   }
 
@@ -70,6 +70,7 @@ function ReviewsForm(): JSX.Element {
                 id={`${value}-stars`}
                 type="radio"
                 onChange={handleChangeReview}
+                checked={value === review.rating}
               />
               <label
                 htmlFor={`${value}-stars`}
@@ -88,6 +89,7 @@ function ReviewsForm(): JSX.Element {
           id="review"
           name="comment"
           placeholder="Tell how was your stay, what you like and what can be improved"
+          value={review.comment}
           onChange={handleChangeReview}
         >
         </textarea>
@@ -101,7 +103,7 @@ function ReviewsForm(): JSX.Element {
           <button
             className="reviews__submit form__submit button"
             type="submit"
-            disabled={review.rating === 0 || review.comment.length < CHARACTERS.min || review.comment.length > CHARACTERS.max}
+            disabled={review.rating === '0' || review.comment.length < CHARACTERS.min || review.comment.length > CHARACTERS.max}
           >
             Submit
           </button>
