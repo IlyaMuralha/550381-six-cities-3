@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { CITIES } from '../../const';
 import { useAppDispatch } from '../../hooks/store';
 import { offersAction } from '../../store/slices/offers';
@@ -33,4 +34,4 @@ function NavTabs({currentCity}: NavTabsProps): JSX.Element {
   );
 }
 
-export default NavTabs;
+export default memo(NavTabs);

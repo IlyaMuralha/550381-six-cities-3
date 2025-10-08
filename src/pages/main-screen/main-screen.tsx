@@ -4,7 +4,7 @@ import Map from '../../components/map/map';
 import SortForm from '../../components/sort-form/sort-form';
 import { TOffer } from '../../components/offer-card/types';
 import { useAppDispatch, useAppSelector } from '../../hooks/store';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { getSortedOffers } from '../../utils';
 import Empty from '../../components/empty/empty';
 import { CITIES, RequestStatus } from '../../const';
@@ -25,6 +25,10 @@ function MainScreen(): JSX.Element {
       .catch(() => setFailedFetch(true));
   }, []);
 
+  const handleOfferHover = useCallback((offer?: TOffer): void => {
+    setActiveOffer(offer);
+  }, []);
+
   const OffersLoadingStatus = useAppSelector((state) => state.offers.status);
   const offers = useAppSelector(offersSelectors.offers);
   const initialCity = useAppSelector(offersSelectors.city);
@@ -41,10 +45,6 @@ function MainScreen(): JSX.Element {
       <Loader/>
     );
   }
-
-  const handleOfferHover = (offer?: TOffer) => {
-    setActiveOffer(offer);
-  };
 
   const currentOffers = offers.filter((offer) => offer.city.name === initialCity);
   const currentCity = CITIES.filter((city) => city.name === initialCity)[0];

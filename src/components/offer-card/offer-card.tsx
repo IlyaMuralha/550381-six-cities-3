@@ -4,6 +4,7 @@ import Badge from '../badge/badge';
 import { TOffer } from './types';
 import Bookmark from '../bookmark/bookmark';
 import { calcRating, ucFirst } from '../../utils';
+import { memo } from 'react';
 
 type TClassesForType = {
   container: string;
@@ -76,4 +77,4 @@ function OfferCard({offer, handleHover, classesForType, sizeForType}: OfferCardP
   );
 }
 
-export default OfferCard;
+export default memo(OfferCard);

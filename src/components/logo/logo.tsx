@@ -1,6 +1,7 @@
 import {Link, useLocation} from 'react-router-dom';
 import clsx from 'clsx';
 import { AppRoute } from '../../const';
+import { memo } from 'react';
 
 type LogoProps = {
   type: 'header' | 'footer';
@@ -36,4 +37,4 @@ function Logo({type}: LogoProps) :JSX.Element {
 
 }
 
-export default Logo;
+export default memo(Logo);

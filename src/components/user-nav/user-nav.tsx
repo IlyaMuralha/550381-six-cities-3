@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import { logout } from '../../store/api-actions';
 import { userSelectors } from '../../store/slices/user';
 import { useFavoriteCount } from '../../hooks/use-favorite-count';
+import { memo } from 'react';
 
 function UserNav() :JSX.Element {
   const isAuthorized = useAuth();
@@ -51,4 +52,4 @@ function UserNav() :JSX.Element {
   );
 }
 
-export default UserNav;
+export default memo(UserNav);

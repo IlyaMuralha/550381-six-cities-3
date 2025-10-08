@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { useAppDispatch } from '../../hooks/store';
 import { changeFavorites } from '../../store/api-actions';
-import { useState } from 'react';
+import { memo, useState } from 'react';
 
 type BookmarksProps = {
   isFavorite: boolean;
@@ -48,4 +48,4 @@ function Bookmark({type, isFavorite, offerId}:BookmarksProps): JSX.Element {
   );
 }
 
-export default Bookmark;
+export default memo(Bookmark);
