@@ -29,7 +29,7 @@ function MainScreen(): JSX.Element {
     setActiveOffer(offer);
   }, []);
 
-  const OffersLoadingStatus = useAppSelector((state) => state.offers.status);
+  const OffersLoadingStatus = useAppSelector(offersSelectors.statusOffers);
   const offers = useAppSelector(offersSelectors.offers);
   const initialCity = useAppSelector(offersSelectors.city);
   const activeSort = useAppSelector(offersSelectors.activeSort);

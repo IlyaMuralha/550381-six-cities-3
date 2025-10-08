@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { useAppSelector } from '../../hooks/store';
 import { favoritesSelectors } from '../../store/slices/favorites';
 import OfferCardList from '../offer-card-list/offer-card-list';
@@ -27,4 +28,4 @@ function FavoritesList(): JSX.Element {
   );
 }
 
-export default FavoritesList;
+export default memo(FavoritesList);
