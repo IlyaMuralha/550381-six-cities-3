@@ -2,6 +2,9 @@ import clsx from 'clsx';
 import { useAppDispatch } from '../../hooks/store';
 import { changeFavorites } from '../../store/api-actions';
 import { memo, useState } from 'react';
+import { useAuth } from '../../hooks/user-authorization';
+import { useNavigate } from 'react-router-dom';
+import { AppRoute } from '../../const';
 
 type BookmarksProps = {
   isFavorite: boolean;
@@ -22,9 +25,16 @@ const Sizes = {
 
 function Bookmark({type, isFavorite, offerId}:BookmarksProps): JSX.Element {
   const [activ, setActive] = useState(isFavorite ? isFavorite : false);
-
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const isAuthorized = useAuth();
+
   function handleClick() {
+    if (!isAuthorized) {
+      return navigate(AppRoute.Login);
+    }
+
     dispatch(changeFavorites({
       offerId,
       status: Number(!activ)
