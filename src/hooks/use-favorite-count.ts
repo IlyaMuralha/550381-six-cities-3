@@ -15,7 +15,7 @@ export function useFavoriteCount() {
     if (isAuthorized && status === RequestStatus.Idle) {
       dispatch(fetchFavorites());
     }
-  }, [status, dispatch]);
+  }, [isAuthorized, status, dispatch]);
 
   return count;
 }

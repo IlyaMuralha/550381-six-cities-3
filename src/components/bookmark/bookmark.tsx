@@ -1,13 +1,12 @@
 import clsx from 'clsx';
-import { useAppDispatch } from '../../hooks/store';
+import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import { changeFavorites } from '../../store/api-actions';
-import { memo, useState } from 'react';
 import { useAuth } from '../../hooks/user-authorization';
 import { useNavigate } from 'react-router-dom';
 import { AppRoute } from '../../const';
+import { selectFavoriteIds } from '../../store/slices/favorites';
 
 type BookmarksProps = {
-  isFavorite: boolean;
   type: 'offer' | 'place-card';
   offerId: string;
 }
@@ -23,12 +22,13 @@ const Sizes = {
   }
 };
 
-function Bookmark({type, isFavorite, offerId}:BookmarksProps): JSX.Element {
-  const [activ, setActive] = useState(isFavorite ? isFavorite : false);
+function Bookmark({type, offerId}:BookmarksProps): JSX.Element {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const favoriteIds = useAppSelector(selectFavoriteIds);
 
   const isAuthorized = useAuth();
+  const isFavorite = favoriteIds.has(offerId);
 
   function handleClick() {
     if (!isAuthorized) {
@@ -37,16 +37,12 @@ function Bookmark({type, isFavorite, offerId}:BookmarksProps): JSX.Element {
 
     dispatch(changeFavorites({
       offerId,
-      status: Number(!activ)
-    }))
-      .unwrap()
-      .then(() => {
-        dispatch(() => setActive(!activ));
-      });
+      status: Number(!isFavorite)
+    }));
   }
   return (
     <button
-      className={clsx(`${type}__bookmark-button button`, activ && 'place-card__bookmark-button--active')}
+      className={clsx(`${type}__bookmark-button button`, isFavorite && 'place-card__bookmark-button--active')}
       type="button"
       onClick={handleClick}
     >
@@ -58,4 +54,4 @@ function Bookmark({type, isFavorite, offerId}:BookmarksProps): JSX.Element {
   );
 }
 
-export default memo(Bookmark);
+export default Bookmark;

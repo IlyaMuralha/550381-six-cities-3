@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSelector, createSlice } from '@reduxjs/toolkit';
 import { TOffers } from '../../components/offer-card/types';
 import { FavoriteStatus, RequestStatus } from '../../const';
 import { changeFavorites, fetchFavorites } from '../api-actions';
@@ -24,7 +24,9 @@ function processLoading(state: TFavoritesState) {
 const favoritesSlice = createSlice({
   initialState,
   name: 'favorites',
-  reducers: {},
+  reducers: {
+    resetFavorites: () => initialState
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchFavorites.pending, processLoading)
@@ -54,8 +56,14 @@ const favoritesSlice = createSlice({
 const favoritesAction = favoritesSlice.actions;
 const favoritesSelectors = favoritesSlice.selectors;
 
+const selectFavoriteIds = createSelector(
+  [favoritesSelectors.favorites],
+  (favoritesData) => new Set(favoritesData.map(({ id }) => id))
+);
+
 export {
   favoritesSlice,
   favoritesAction,
-  favoritesSelectors
+  favoritesSelectors,
+  selectFavoriteIds
 };

@@ -5,6 +5,9 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { validateLoginForm } from '../../utils';
 import LoginForm from '../../components/login-form/login-form';
+import { Link } from 'react-router-dom';
+import { AppRoute } from '../../const';
+import { offersAction } from '../../store/slices/offers';
 
 export type HTMLLoginForm = {
   email: string;
@@ -50,9 +53,15 @@ function LoginScreen(): JSX.Element {
         </section>
         <section className="locations locations--login locations--current">
           <div className="locations__item">
-            <a className="locations__item-link" href="#">
-              <span>Amsterdam</span>
-            </a>
+            <Link
+              className="locations__item-link"
+              to={AppRoute.Main}
+              onClick={() => dispatch(offersAction.setCity('Amsterdam'))}
+            >
+              <span>
+                Amsterdam
+              </span>
+            </Link>
           </div>
         </section>
       </div>

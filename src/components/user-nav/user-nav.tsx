@@ -6,6 +6,7 @@ import { logout } from '../../store/api-actions';
 import { userSelectors } from '../../store/slices/user';
 import { useFavoriteCount } from '../../hooks/use-favorite-count';
 import { memo } from 'react';
+import { favoritesAction } from '../../store/slices/favorites';
 
 function UserNav() :JSX.Element {
   const isAuthorized = useAuth();
@@ -32,6 +33,7 @@ function UserNav() :JSX.Element {
                 to={AppRoute.Login}
                 onClick={() => {
                   dispatch(logout());
+                  dispatch(favoritesAction.resetFavorites());
                 }}
               >
                 <span className="header__signout">Sign out</span>
