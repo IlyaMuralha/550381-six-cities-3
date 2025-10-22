@@ -62,7 +62,7 @@ function MainScreen(): JSX.Element {
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{offerCardCount} places to stay in {initialCity}</b>
+              <b className="places__found">{offerCardCount} {offerCardCount === 1 ? 'place' : 'places'} to stay in {initialCity}</b>
               <SortForm />
               <OfferCardList offers={sortedOffers} type='mainScreen' handleHover={handleOfferHover}/>
             </section>
