@@ -71,6 +71,11 @@ export enum AuthorizationStatus {
   Unknown = 'UNKNOWN'
 }
 
+export enum FavoriteStatus {
+  Added = 1,
+  Removed = 0
+}
+
 export const URL_MARKER_DEFAULT =
   '/img/pin.svg';
 
@@ -88,3 +93,5 @@ export enum APIRoute {
 }
 
 export const enum RequestStatus { Idle, Loading, Success, Failed }
+
+export const MAX_VISIBLE_REVIEWS = 10;

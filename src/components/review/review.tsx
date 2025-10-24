@@ -1,5 +1,6 @@
 import { TReview } from './types';
 import { calcRating } from '../../utils';
+import { memo } from 'react';
 
 type ReviewProps = {
   review: TReview;
@@ -49,4 +50,4 @@ function Review({review}: ReviewProps): JSX.Element {
   );
 }
 
-export default Review;
+export default memo(Review);

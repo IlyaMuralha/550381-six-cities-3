@@ -1,9 +1,11 @@
 import { Fragment, useState, ChangeEvent, FormEvent } from 'react';
-import { useAppDispatch } from '../../hooks/store';
+import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import { postComment } from '../../store/api-actions';
 import { useParams } from 'react-router';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { reviewsSelectors } from '../../store/slices/reviews';
+import { RequestStatus } from '../../const';
 
 const CHARACTERS = {
   min: 50,
@@ -11,18 +13,20 @@ const CHARACTERS = {
 };
 
 const rating = [
-  {value: 5, label: 'perfect'},
-  {value: 4, label: 'good'},
-  {value: 3, label: 'not bad'},
-  {value: 2, label: 'badly'},
-  {value: 1, label: 'terribly'}
+  {value: '5', label: 'perfect'},
+  {value: '4', label: 'good'},
+  {value: '3', label: 'not bad'},
+  {value: '2', label: 'badly'},
+  {value: '1', label: 'terribly'}
 ];
 
 function ReviewsForm(): JSX.Element {
   const dispatch = useAppDispatch();
   const { id } = useParams<{ id: string }>();
 
-  const [review, setReview] = useState({rating: 0, comment: ''});
+  const [review, setReview] = useState({rating: '0', comment: ''});
+
+  const isLoading = useAppSelector(reviewsSelectors.reviewStatus) === RequestStatus.Loading;
 
   const handleChangeReview = (evt:ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const {name, value} = evt.target;
@@ -42,7 +46,7 @@ function ReviewsForm(): JSX.Element {
       rating: Number(review.rating)
     }))
       .unwrap()
-      .then(() => setReview({rating: 0,comment: ''}))
+      .then(() => setReview({rating: '0',comment: ''}))
       .catch(() => toast.error('Не удалось отправить комментарий'));
   }
 
@@ -70,6 +74,8 @@ function ReviewsForm(): JSX.Element {
                 id={`${value}-stars`}
                 type="radio"
                 onChange={handleChangeReview}
+                checked={value === review.rating}
+                disabled={isLoading}
               />
               <label
                 htmlFor={`${value}-stars`}
@@ -88,7 +94,9 @@ function ReviewsForm(): JSX.Element {
           id="review"
           name="comment"
           placeholder="Tell how was your stay, what you like and what can be improved"
+          value={review.comment}
           onChange={handleChangeReview}
+          disabled={isLoading}
         >
         </textarea>
         <div className="reviews__button-wrapper">
@@ -101,7 +109,7 @@ function ReviewsForm(): JSX.Element {
           <button
             className="reviews__submit form__submit button"
             type="submit"
-            disabled={review.rating === 0 || review.comment.length < CHARACTERS.min || review.comment.length > CHARACTERS.max}
+            disabled={review.rating === '0' || review.comment.length < CHARACTERS.min || review.comment.length > CHARACTERS.max || isLoading}
           >
             Submit
           </button>

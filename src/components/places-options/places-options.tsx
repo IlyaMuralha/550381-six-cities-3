@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { PLACE_OPTIONS } from '../../const';
 import { useAppDispatch } from '../../hooks/store';
 import { offersAction } from '../../store/slices/offers';
@@ -25,4 +26,4 @@ function PlacesOptions({activeSort, isOpen}: PlacesOptionsProps): JSX.Element {
   );
 }
 
-export default PlacesOptions;
+export default memo(PlacesOptions);

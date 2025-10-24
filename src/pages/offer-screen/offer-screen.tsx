@@ -6,16 +6,17 @@ import OfferRating from '../../components/offer-rating/offer-rating';
 import OfferGoodsItem from '../../components/offer-goods-item/offer-goods-item';
 import ReviewsForm from '../../components/reviews-form/reviews-form';
 import OfferCardList from '../../components/offer-card-list/offer-card-list';
-import { AuthorizationStatus, RequestStatus } from '../../const';
+import { AuthorizationStatus, MAX_VISIBLE_REVIEWS, RequestStatus } from '../../const';
 import Map from '../../components/map/map';
 import ReviewsList from '../../components/reviews-list/reviews-list';
-import { calcRating, ucFirst } from '../../utils';
+import { calcRating, getReverseAndSliceArray, ucFirst } from '../../utils';
 import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import { fetchComments, fetchNearOffers, fetchOffer } from '../../store/api-actions';
 import { useEffect } from 'react';
 import Loader from '../loading-screen/loading-screen';
 import { offerSelectors } from '../../store/slices/offer';
 import { reviewsSelectors } from '../../store/slices/reviews';
+import Bookmark from '../../components/bookmark/bookmark';
 
 
 type OfferScreenProps = {
@@ -27,6 +28,7 @@ function OfferScreen({ authorizationStatus}: OfferScreenProps): JSX.Element {
   const {id} = useParams();
 
   const currentOffer = useAppSelector(offerSelectors.offerDetails);
+
   const nearOffers = useAppSelector(offerSelectors.nearOffers).slice(0, 3);
   const offerLoadingStatus = useAppSelector(offerSelectors.statusOffer);
   const reviews = useAppSelector(reviewsSelectors.reviews);
@@ -60,6 +62,8 @@ function OfferScreen({ authorizationStatus}: OfferScreenProps): JSX.Element {
 
   const nearOffersPlusCurrent: TOffers = [currentOffer, ...nearOffers];
 
+  const visibleReviews = getReverseAndSliceArray(reviews, MAX_VISIBLE_REVIEWS);
+
   return (
     <main className="page__main page__main--offer">
       <section className="offer">
@@ -83,12 +87,7 @@ function OfferScreen({ authorizationStatus}: OfferScreenProps): JSX.Element {
               <h1 className="offer__name">
                 {currentOffer.title}
               </h1>
-              <button className="offer__bookmark-button button" type="button">
-                <svg className="offer__bookmark-icon" width="31" height="33">
-                  <use xlinkHref="#icon-bookmark"></use>
-                </svg>
-                <span className="visually-hidden">To bookmarks</span>
-              </button>
+              <Bookmark type={'offer'} offerId={currentOffer.id} isFavorite={currentOffer.isFavorite}/>
             </div>
             <OfferRating rating={currentOffer.rating} ratingStyle={ratingStyle}/>
 
@@ -138,7 +137,7 @@ function OfferScreen({ authorizationStatus}: OfferScreenProps): JSX.Element {
               <h2 className="reviews__title">
                 Reviews &middot; <span className="reviews__amount">{reviews.length}</span>
               </h2>
-              <ReviewsList reviews={reviews}/>
+              <ReviewsList reviews={visibleReviews}/>
               {authorizationStatus === AuthorizationStatus.Auth && <ReviewsForm />}
             </section>
           </div>

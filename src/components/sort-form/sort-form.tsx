@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { memo, useRef, useState } from 'react';
 import PlacesOptions from '../places-options/places-options';
 import { useAppSelector } from '../../hooks/store';
 import { useClickOutside } from '../../hooks/use-click-outside';
@@ -28,4 +28,4 @@ function SortForm(): JSX.Element {
   );
 }
 
-export default SortForm;
+export default memo(SortForm);

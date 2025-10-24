@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import Logo from '../logo/logo';
 import UserNav from '../user-nav/user-nav';
 
@@ -22,4 +23,4 @@ function Header({shouldRenderUser}: HeaderProps) :JSX.Element {
   );
 }
 
-export default Header;
+export default memo(Header);

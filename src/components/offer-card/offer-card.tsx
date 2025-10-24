@@ -4,6 +4,7 @@ import Badge from '../badge/badge';
 import { TOffer } from './types';
 import Bookmark from '../bookmark/bookmark';
 import { calcRating, ucFirst } from '../../utils';
+import { memo } from 'react';
 
 type TClassesForType = {
   container: string;
@@ -23,7 +24,7 @@ type OfferCardProps = {
 }
 
 function OfferCard({offer, handleHover, classesForType, sizeForType}: OfferCardProps): JSX.Element {
-  const {id, title, type, price, isFavorite, isPremium, previewImage, rating } = offer;
+  const {id, title, type, price, isPremium, previewImage, rating } = offer;
 
   const ratingStyle = calcRating(rating);
 
@@ -59,7 +60,7 @@ function OfferCard({offer, handleHover, classesForType, sizeForType}: OfferCardP
             <b className="place-card__price-value">&euro;{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <Bookmark isFavorite={isFavorite}/>
+          <Bookmark type={'place-card'} offerId={id}/>
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
@@ -68,7 +69,7 @@ function OfferCard({offer, handleHover, classesForType, sizeForType}: OfferCardP
           </div>
         </div>
         <h2 className="place-card__name">
-          <a href="#">{title}</a>
+          <Link to={`/offer/${id}`}>{title}</Link>
         </h2>
         <p className="place-card__type">{ucFirst(type)}</p>
       </div>
@@ -76,4 +77,4 @@ function OfferCard({offer, handleHover, classesForType, sizeForType}: OfferCardP
   );
 }
 
-export default OfferCard;
+export default memo(OfferCard);
