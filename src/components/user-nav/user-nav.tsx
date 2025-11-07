@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import { useAuth } from '../../hooks/user-authorization';
 import { useAppDispatch, useAppSelector } from '../../hooks/store';
@@ -13,6 +13,7 @@ function UserNav() :JSX.Element {
   const user = useAppSelector(userSelectors.user);
   const dispatch = useAppDispatch();
   const favoriteCount = useFavoriteCount();
+  const navigate = useNavigate();
 
   return (
     <nav className="header__nav">
@@ -28,24 +29,25 @@ function UserNav() :JSX.Element {
               </Link>
             </li>
             <li className="header__nav-item">
-              <Link
+              <a
                 className="header__nav-link"
-                to={AppRoute.Login}
-                onClick={() => {
+                onClick={(evt) => {
+                  evt.preventDefault();
                   dispatch(logout());
                   dispatch(favoritesAction.resetFavorites());
+                  navigate(AppRoute.Login);
                 }}
               >
                 <span className="header__signout">Sign out</span>
-              </Link>
+              </a>
             </li>
           </>
         ) : (
           <li className="header__nav-item">
-            <Link className="header__nav-link" to={AppRoute.Login}>
+            <Link className="header__nav-link header__nav-link--profile" to={AppRoute.Login}>
               <div className="header__avatar-wrapper user__avatar-wrapper">
               </div>
-              <span className="header__signout">Sign in</span>
+              <span className="header__login">Sign in</span>
             </Link>
           </li>
         )}
